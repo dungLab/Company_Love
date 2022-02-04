@@ -22,4 +22,21 @@ public class CompanyName extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    // == 양방향 편의 메서드 (Company, CompanyName) == //
+    public void addCompanyName(Company company){
+        this.company = company;
+        company.getCompanyNames().add(this);
+    }
+
+    // == 생성 메서드 == //
+    public static CompanyName createCompanyName(String name, String lang, Company company){
+        CompanyName companyName = new CompanyName();
+
+        companyName.name = name;
+        companyName.lang = lang;
+        companyName.addCompanyName(company);
+
+        return companyName;
+    }
 }
